@@ -1,0 +1,29 @@
+language: cpp
+
+sudo: false
+
+addons:
+  apt:
+    sources:
+     - ubuntu-toolchain-r-test
+    packages:
+     - libstdc++6 # upgrade libstdc++ on linux to support C++11
+
+env:
+  global:
+   - NODE_VERSION: "0.10"
+   - TESTCASE : "./color.js"
+
+matrix:
+  include:
+     - env: MAPNIK_VERSION="3.4.7"
+     - env: MAPNIK_VERSION="3.4.8"
+
+before_install:
+ - source ./install_node.sh ${NODE_VERSION}
+
+install:
+ - ./install.sh ${MAPNIK_VERSION}
+
+script:
+ - node runner.js mapnik-versions/v${MAPNIK_VERSION}/ ${TESTCASE} 
