@@ -1,4 +1,6 @@
-## Change detection of node-mapnik changes
+## Change detection of node-mapnik differences
+
+[![Build Status](https://travis-ci.org/mapnik/change-detection.svg?branch=master)](https://travis-ci.org/mapnik/change-detection)
 
 This repo offers scripts to help quickly test code against any node-mapnik release.
 
