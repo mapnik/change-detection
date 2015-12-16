@@ -19,7 +19,5 @@ if (mapnik_modules.length > 1) {
     process.exit(1);
 }
 
-var mapnik = require(submodules_directory+'/mapnik');
-
 var test_script = require(process.argv[3]);
-console.log(test_script());
+console.log(test_script(submodules_directory+'/mapnik'));
