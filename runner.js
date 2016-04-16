@@ -4,18 +4,6 @@ var fs = require('fs');
 var path_arg = process.argv[2];
 var test_script = require(process.argv[3]);
 
-if (!String.prototype.endsWith) {
-  String.prototype.endsWith = function(searchString, position) {
-      var subjectString = this.toString();
-      if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length) {
-        position = subjectString.length;
-      }
-      position -= searchString.length;
-      var lastIndex = subjectString.indexOf(searchString, position);
-      return lastIndex !== -1 && lastIndex === position;
-  };
-}
-
 function check_for_dupes() {
     var mapnik_modules = Object.keys(require.cache).filter(function(p) {
         return (p.indexOf('mapnik.js') > -1);
@@ -32,7 +20,7 @@ var require_path;
 var path_arg = path.resolve(path_arg);
 
 // pointing at local node-mapnik clone
-if (path_arg.endsWith('node-mapnik')) {
+if (fs.existsSync(path.join(path_arg,'lib/mapnik.js'))) {
     require_path = path.join(path_arg,'lib');
 } else {
     var submodules_directory = path.join(path_arg,'node_modules');
