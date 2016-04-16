@@ -1,23 +1,53 @@
 var path = require('path');
 var fs = require('fs');
 
-var submodules_directory = path.join(process.argv[2],'node_modules');
+var path_arg = process.argv[2];
+var test_script = require(process.argv[3]);
 
-if (!fs.existsSync(submodules_directory)) {
-    console.log('file does not exist',submodules_directory);
+if (!String.prototype.endsWith) {
+  String.prototype.endsWith = function(searchString, position) {
+      var subjectString = this.toString();
+      if (typeof position !== 'number' || !isFinite(position) || Math.floor(position) !== position || position > subjectString.length) {
+        position = subjectString.length;
+      }
+      position -= searchString.length;
+      var lastIndex = subjectString.indexOf(searchString, position);
+      return lastIndex !== -1 && lastIndex === position;
+  };
+}
+
+function check_for_dupes() {
+    var mapnik_modules = Object.keys(require.cache).filter(function(p) {
+        return (p.indexOf('mapnik.js') > -1);
+    });
+
+    if (mapnik_modules.length > 1) {
+        console.log('duplicate mapnik modules encountered',mapnik_modules);
+        process.exit(1);
+    }
+}
+
+var require_path;
+
+var path_arg = path.resolve(path_arg);
+
+// pointing at local node-mapnik clone
+if (path_arg.endsWith('node-mapnik')) {
+    require_path = path.join(path_arg,'lib');
+} else {
+    var submodules_directory = path.join(path_arg,'node_modules');
+    require_path = submodules_directory+'/mapnik';
+}
+
+if (!fs.existsSync(require_path)) {
+    console.log('file does not exist',require_path);
     process.exit(1)
 }
 
-submodules_directory = path.resolve(submodules_directory);
+var temp_mapnik = require(require_path);
 
-var mapnik_modules = Object.keys(require.cache).filter(function(p) {
-    return (p.indexOf('mapnik.js') > -1);
-});
+check_for_dupes();
 
-if (mapnik_modules.length > 1) {
-    console.log('duplicate mapnik modules encountered',mapnik_modules);
-    process.exit(1);
-}
+console.log(test_script(require_path));
 
-var test_script = require(process.argv[3]);
-console.log(test_script(submodules_directory+'/mapnik'));
+check_for_dupes();
