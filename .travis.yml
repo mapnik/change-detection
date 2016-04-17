@@ -12,12 +12,12 @@ addons:
 env:
   global:
    - NODE_VERSION: "0.10"
-   - TESTCASE : "./color.js"
+   - TESTCASE : "./composite.js"
 
 matrix:
   include:
-     - env: MAPNIK_VERSION="3.4.7"
-     - env: MAPNIK_VERSION="3.4.8"
+     - env: MAPNIK_VERSION="3.4.19"
+     - env: MAPNIK_VERSION="3.5.11"
 
 before_install:
  - source ./install_node.sh ${NODE_VERSION}
