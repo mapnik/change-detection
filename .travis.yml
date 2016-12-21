@@ -16,6 +16,7 @@ env:
 matrix:
   include:
      - env: MAPNIK_VERSION="3.4.19"
+     - env: MAPNIK_VERSION="3.5.0"
      - env: MAPNIK_VERSION="3.5.11"
      - env: MAPNIK_VERSION="3.5.14"
 
