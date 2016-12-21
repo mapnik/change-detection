@@ -12,12 +12,12 @@ addons:
 env:
   global:
    - NODE_VERSION: "0.10"
-   - TESTCASE : "./composite.js"
 
 matrix:
   include:
      - env: MAPNIK_VERSION="3.4.19"
      - env: MAPNIK_VERSION="3.5.11"
+     - env: MAPNIK_VERSION="3.5.14"
 
 before_install:
  - source ./install_node.sh ${NODE_VERSION}
@@ -26,4 +26,4 @@ install:
  - ./install.sh ${MAPNIK_VERSION}
 
 script:
- - node runner.js mapnik-versions/v${MAPNIK_VERSION}/ ${TESTCASE} 
+ - node runner.js mapnik-versions/v${MAPNIK_VERSION}/ ./composite-raster.js
