@@ -26,4 +26,4 @@ install:
  - ./install.sh ${MAPNIK_VERSION}
 
 script:
- - node runner.js mapnik-versions/v${MAPNIK_VERSION}/ ./composite-raster.js
+ - node runner.js mapnik-versions/v${MAPNIK_VERSION}/ ./overzoom-vector.js
