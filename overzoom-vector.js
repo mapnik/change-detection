@@ -6,9 +6,6 @@ module.exports = function(mapnik_path) {
 
     var parent = new mapnik.VectorTile(14,4957,6059);
     parent.setData(fs.readFileSync('./data/local-parent.mvt'));
-    var parent_label_length = parent.toGeoJSON('poi_label').length;
-    console.log(parent_label_length);
-//    assert.ok(parent_label_length == 23376);
     assert.ok(parent.getData().length == 150641);
 
     var vt;
@@ -41,11 +38,18 @@ module.exports = function(mapnik_path) {
     vt.composite([parent],opts);
     console.timeEnd('comp');
 
-    var label_layer_length = vt.toGeoJSON('poi_label').length;
-    assert.ok(18464 == label_layer_length);
+    var features = JSON.parse(vt.toGeoJSON('__all__')).features;
+    var found_expected_feature_in_buffered_extent = false;
+    assert.ok(features.length == 3655);
+    features.forEach(function(f) {
+        if (f.properties.name == 'Boston') {
+            found_expected_feature_in_buffered_extent = true;
+        }
+    })
+    assert.ok(found_expected_feature_in_buffered_extent);
     if (process.env.DEBUG) {
         fs.writeFileSync('out-'+mapnik.version+'.geojson',vt.toGeoJSON('poi_label'))
     }
-    return label_layer_length
+    return found_expected_feature_in_buffered_extent;
 }
 
