@@ -17,7 +17,7 @@ module.exports = function(mapnik_path) {
     } else {
         if (+mapnik.version.split('.')[1] == 5) { // 3.5.x
             // bug workaround (should be handled better in mapnik-vt)
-            parent.bufferSize = 255*16;
+            //parent.bufferSize = 255*16;
             vt = new mapnik.VectorTile(15,9915,12119,{buffer_size: 255*16});
             opts = {
                 max_extent: max_extent
